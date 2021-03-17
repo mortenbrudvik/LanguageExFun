@@ -14,6 +14,13 @@ namespace FunConsole
     {
         static void Main(string[] args)
         {
+            /* Partial Application
+             *  Give a function fewer arguments than the function expects, obtaining a function that’s particularized with the values of the arguments given so far.
+             * - Writing functions in curried form
+             * - Currying functions with Curry, and then invoking the curried function with subsequent arguments
+             * - Supplying arguments one by one with Apply
+             */
+            
             var names = new[] {"Bob", "Lisa", "Bill", "Joe"};
 
             Func<string, string, string> greet = (greeting, name) => $"{greeting} {name}!";
@@ -29,7 +36,6 @@ namespace FunConsole
             names.Map(x=>greetCowboy(x)).ToList().ForEach(WriteLine);
 
             WriteLine("\nAdd method, currying");
-
             var add = curry((int x, int y) => x + y);
             var res = add(2)(2);
             WriteLine("2+2 = " + res);
