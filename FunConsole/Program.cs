@@ -19,6 +19,9 @@ namespace FunConsole
              * - Writing functions in curried form
              * - Currying functions with Curry, and then invoking the curried function with subsequent arguments
              * - Supplying arguments one by one with Apply
+             *
+             * LanguageEx discussion on this topic. (Some of the examples below is copied from there.)
+             * https://github.com/louthy/language-ext/issues/23
              */
             
             var names = new[] {"Bob", "Lisa", "Bill", "Joe"};
