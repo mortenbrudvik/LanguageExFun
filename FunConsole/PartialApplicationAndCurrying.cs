@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using static System.Console;
 using static LanguageExt.Prelude;
@@ -21,14 +22,20 @@ namespace FunConsole
             var names = new[] {"Bob", "Lisa", "Bill", "Joe"};
 
             Func<string, string, string> greet = (greeting, name) => $"{greeting} {name}!";
+            Func<string, string> greetPartial(string greeting) => (name) => $"{greeting} {name}!";
+
             WriteLine("Greet Normal");
             names.Map(x=>greet("Hello", x)).ToList().ForEach(WriteLine);
 
-            WriteLine("\nGreet with partial applications");
+            WriteLine("\nGreet with partial applications (manual)");
+            var greetNeighbor  = greetPartial("Hello good neighbor");
+            names.Map(x=>greetNeighbor(x)).ToList().ForEach(WriteLine);
+
+            WriteLine("\nGreet with partial applications (par)");
             var greetSimple = par(greet, "Hi");
             names.Map(x=>greetSimple(x)).ToList().ForEach(WriteLine);
 
-            WriteLine("\nGreet with partial application, currying");
+            WriteLine("\nGreet with partial application (curry)");
             var greetCowboy = curry(greet)("Howdy");
             names.Map(x=>greetCowboy(x)).ToList().ForEach(WriteLine);
 
