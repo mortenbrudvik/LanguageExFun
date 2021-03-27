@@ -13,24 +13,25 @@ namespace FunConsole
     /// </summary>
     class Program
     {
+        private delegate int ExampleDelegate(int left, int right);
+        
         static void Main(string[] args)
         {
-            PartialApplicationAndCurrying.Run();
-            
-            // Nomad examples
+            //PartialApplicationAndCurrying.Run();
 
-            // Bind multiple parameters
-            static Option<int> Multiply(int x, int y) => Some(x * y);
-            static Option<int> MultiplicationWithBind(string strX, string strY)
-                => parseInt(strX).Bind(x => parseInt(strY)
-                    .Bind(y => Multiply(x,y)));
-            var multiplicationResult = MultiplicationWithBind("4", "2");
-            Out.WriteLine("4*2 = " + multiplicationResult);
+            MultiArgumentFunctions.Run();
             
-
+            // Arrow Notation in C#
+            // int -> int -> int 
+            Func<int, int, int> sum = (x, y) => x + y;
 
             ReadLine();
 
+        }
+
+        private static int Sum(int x, int y)
+        {
+            return x + y;
         }
     }
 }

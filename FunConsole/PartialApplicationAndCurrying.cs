@@ -39,7 +39,6 @@ namespace FunConsole
             var greetCowboy = curry(greet)("Howdy");
             names.Map(x=>greetCowboy(x)).ToList().ForEach(WriteLine);
 
-            
             WriteLine("\nAdd method, currying and partial application");
             var add = curry((int x, int y) => x + y);
             var res = add(2)(2);
