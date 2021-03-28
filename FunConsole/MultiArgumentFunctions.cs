@@ -15,14 +15,9 @@ namespace FunConsole
             
             // Map - Function Application
             Func<int, Func<int, int>> multiply = x => y => x * y;
-            var multiplyBy4 = Some(4).Map(multiply);
-
-            // Map - Using built in currying support
-            Func<int, int, int> multiplyV2 = (x, y) => x * y;
-            var multiplyBy7 = Some(7).Map(multiply);
-
-            multiplyBy7.Apply(Some(2))
-                .IfSome(x => Out.WriteLine("" + x));
+            Some(4).Map(multiply)
+                .Apply(3)
+                .IfSome(WriteLine);
 
             // Lifting functions
             Some(multiply)

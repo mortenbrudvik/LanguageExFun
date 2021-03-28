@@ -17,21 +17,19 @@ namespace FunConsole
         
         static void Main(string[] args)
         {
-            //PartialApplicationAndCurrying.Run();
+            PartialApplicationAndCurrying.Run();
 
             MultiArgumentFunctions.Run();
             
-            // Arrow Notation in C#
-            // int -> int -> int 
-            Func<int, int, int> sum = (x, y) => x + y;
+            // Lists
+            var emptyList = List<string>();
+            var letters = List("a", "b");
+            var abc = letters.Add("c");
+            WriteLine(abc);
+            var ac = abc.Remove("b");
+            WriteLine(ac);
 
             ReadLine();
-
-        }
-
-        private static int Sum(int x, int y)
-        {
-            return x + y;
         }
     }
 }
