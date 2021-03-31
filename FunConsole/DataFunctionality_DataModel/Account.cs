@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace FunConsole.DataFunctionality_DataModel
 {
-    public sealed class Account
+    internal sealed class Account
     {
         private IEnumerable<Transaction> TransactionHistory { get; }
         public Account(AccountStatus status, Currency currency, IEnumerable<Transaction> transactions)
