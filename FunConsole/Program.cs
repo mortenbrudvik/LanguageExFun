@@ -5,6 +5,7 @@ using System.Diagnostics.Contracts;
 using System.Security.Cryptography.X509Certificates;
 using DomainModel;
 using LanguageExt;
+using LanguageExt.ClassInstances;
 using LanguageExt.Common;
 using Microsoft.FSharp.Collections;
 using static System.Console;
@@ -65,14 +66,17 @@ namespace FunConsole
                 .Sum(x=>x.Success);
             Out.WriteLine($"Sum of positive number (-1..10): {totalPositive}" );
 
-            validatePositive(2)
+            validatePositive(1)
+                .Do(result => WriteLine($"Number {result} is positive"))
                 .Bind(validateOdd)
+                .Do(result => WriteLine($"Number {result} is positive and odd"))
                 .Match(x =>
                 {
-                    WriteLine("Success: " + x);
+                    WriteLine("Validation success");
                     return x;
                 }, errors =>
                 {
+                    WriteLine("Validation failed");
                     errors.ToList().ForEach(err => WriteLine("Error: " + err.Value));
                     return 0;
                 });
