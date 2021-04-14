@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FunConsole.DataFunctionality_DataModel
+namespace FunConsole.DataFunctionalityDataModel
 {
     public sealed class Transaction
     {
