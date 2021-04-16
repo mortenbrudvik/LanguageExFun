@@ -42,7 +42,7 @@ namespace FunConsole
             volvoFactory.BuyCar("red")
                 .OrElse(toyotaFactory.BuyCar("blue")) // Not lazy - both will be called - two cars bought
                 .Match(
-                    car => WriteLine($"Bought {car.Brand} with color {car.Color}"),
+                    newCar => WriteLine($"Bought {newCar.Brand} with color {newCar.Color}"),
                     () => WriteLine("No matching car"));
 
             WriteLine($"Volvo factory have {volvoFactory.Cars.Count} red cars for sale");
@@ -51,11 +51,17 @@ namespace FunConsole
             volvoFactory.BuyCar("red")
                 .OrElse(() => toyotaFactory.BuyCar("blue")) // () => Lazy, the second will not be evaluated - only one car bought
                 .Match(
-                    car => WriteLine($"Bought {car.Brand} with color {car.Color}"),
+                    newCar => WriteLine($"Bought {newCar.Brand} with color {newCar.Color}"),
                     () => WriteLine("No matching car"));
             
             WriteLine($"Volvo factory have {volvoFactory.Cars.Count} red cars for sale");
             WriteLine($"Toyota factory have {toyotaFactory.Cars.Count} blue cars for sale");
+
+            WriteLine("GetOrElse(defaultValue): Try to buy new blue car or else I will paint my old car blue");
+            var oldCar = new Car("Volvo", "red", "old red car");
+            var car = volvoFactory.BuyCar("blue")
+                .GetOrElse(() => oldCar with {Color = "blue", Description = "old car painted blue"});
+            WriteLine("Result: " + car.Description);
 
             ReadLine();
         }
@@ -72,9 +78,19 @@ namespace FunConsole
             => left.Match(
                 right, 
                 _ => left);
+
+        public static T GetOrElse<T>(this Option<T> opt, T defaultValue)
+            => opt.Match(
+                x => x,
+                defaultValue);
+        
+        public static T GetOrElse<T>(this Option<T> opt, Func<T> fallback)
+            => opt.Match(
+                x => x,
+                fallback());
     }
 
-    internal record Car(string Brand, string Color);
+    internal record Car(string Brand, string Color, string Description = "");
 
     internal class CarFactory
     {
@@ -87,7 +103,6 @@ namespace FunConsole
         public void ProduceCars(int number, string withColor) =>
             _cars.AddRange(Repeat(_brand, number)
                 .Select(brand => new Car(brand, withColor)));
-
         public Option<Car> BuyCar(string withColor) =>
             _cars.Find(x => x.Color == withColor) switch
             {
