@@ -33,7 +33,7 @@ namespace FunConsole
             
             ValidationFun.Run();
             
-            // Lazy Computation
+            // Lazy Computation - OrElse
             var volvoFactory = new CarFactory("Volvo");
             var toyotaFactory = new CarFactory("Toyota");
             volvoFactory.ProduceCars(2, "red");
@@ -48,6 +48,7 @@ namespace FunConsole
             WriteLine($"Volvo factory have {volvoFactory.Cars.Count} red cars for sale");
             WriteLine($"Toyota factory have {volvoFactory.Cars.Count} blue cars for sale");
 
+            // Lazy Computation - GetOrElse
             volvoFactory.BuyCar("red")
                 .OrElse(() => toyotaFactory.BuyCar("blue")) // () => Lazy, the second will not be evaluated - only one car bought
                 .Match(
@@ -63,8 +64,26 @@ namespace FunConsole
                 .GetOrElse(() => oldCar with {Color = "blue", Description = "old car painted blue"});
             WriteLine("Result: " + car.Description);
 
+            // Lazy Computation - Map
+            Func<Car> lazyRedCar = () => new Car("Volvo", "Red");
+            Func<Car, Car> turnBlue = c => c with {Color = "Blue"};
+            Func<Car> lazyBlueCar = lazyRedCar.Map(turnBlue);
+            Out.WriteLine(lazyBlueCar());
+            
             ReadLine();
         }
+    }
+
+    public static class FuncExt
+    {
+        public static Func<R> Map<T, R>
+            (this Func<T> f, Func<T, R> g)
+            => () => g(f());
+
+        public static Func<R> Bind<T, R>
+            (this Func<T> f, Func<T, Func<R>> g)
+            => () => g(f())();
+
     }
     
     public static class OptionExt
