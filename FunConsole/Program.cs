@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using DomainModel;
 using LanguageExt;
 using LanguageExt.ClassInstances;
@@ -32,6 +33,10 @@ namespace FunConsole
             DataFunctionality.Run();
             
             ValidationFun.Run();
+            
+            Misc.Run();
+ 
+            
             
             // Lazy Computation - OrElse
             var volvoFactory = new CarFactory("Volvo");
@@ -69,6 +74,9 @@ namespace FunConsole
             Func<Car, Car> turnBlue = c => c with {Color = "Blue"};
             Func<Car> lazyBlueCar = lazyRedCar.Map(turnBlue);
             Out.WriteLine(lazyBlueCar());
+
+            // Exception handling
+
             
             ReadLine();
         }

@@ -1,9 +1,11 @@
 using System;
 using System.Linq;
 using LanguageExt;
-using static System.Console;
+using LanguageExt.Common;
 using static System.Linq.Enumerable;
 using static LanguageExt.Prelude;
+using static System.Console;
+using Error = LanguageExt.Common.Error;
 
 namespace FunConsole
 {
@@ -33,7 +35,7 @@ namespace FunConsole
             var isAllPositive = Range(1, 10)
                 .Map(validatePositive)
                 .All(x => x.IsSuccess);
-            Out.WriteLine($"All Positive (1..10): {isAllPositive}" );
+            WriteLine($"All Positive (1..10): {isAllPositive}" );
 
             isAllPositive = Range(-1, 12)
                 .Map(validatePositive)
@@ -60,6 +62,19 @@ namespace FunConsole
                     errors.ToList().ForEach(err => WriteLine("Error: " + err.Value));
                     return 0;
                 });
+            
+            // validate using either
+            WriteLine("validate using either");
+            Func<int, Either<Error, int>> validateOddEither = number =>
+                (number%2==0) switch
+                {
+                    false => Right(number),
+                    _ => Left(Error.New("Not odd number"))
+                };
+
+            validateOddEither(0)
+                .Do(result => WriteLine($"number {result} is odd"))
+                .Match(_ => WriteLine("Validation success"), error => WriteLine(error.Message));
         }
         
         public class CustomError : NewType<CustomError, string>
