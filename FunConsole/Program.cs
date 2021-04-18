@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Threading.Tasks;
 using DomainModel;
+using Flurl.Http;
 using LanguageExt;
 using LanguageExt.ClassInstances;
 using LanguageExt.Common;
@@ -14,17 +16,18 @@ using static System.Decimal;
 using static System.Linq.Enumerable;
 using static LanguageExt.Prelude;
 using Error = LanguageExt.Common.Error;
+using Newtonsoft.Json.Linq;
 
 namespace FunConsole
 {
     /// <summary>
     /// https://github.com/louthy/language-ext
     /// </summary>
-    class Program
+    internal  static class Program
     {
         private delegate int ExampleDelegate(int left, int right);
-        
-        static void Main(string[] args)
+
+        private static async Task Main(string[] args)
         {
             PartialApplicationAndCurrying.Run();
 
@@ -76,11 +79,18 @@ namespace FunConsole
             Out.WriteLine(lazyBlueCar());
 
             // Exception handling
+            // "https://api.chucknorris.io/jokes/random"
+            Func<string, Try<Uri>> createUri = uri => Try(() => new Uri(uri));
+            Func<string, TryAsync<string>> getJsonFromUrl = url => TryAsync<string>(async () => await url.GetJsonAsync());
+            Func<Uri, TryAsync<string>> getJsonFromUri = uri => TryAsync<string>(async () => await uri.GetJsonAsync());
+            Func<string,string, Try<string>> getJsonValue = (json, valueName) => Try(() => JObject.Parse(json)[valueName].ToString());
+            
 
             
             ReadLine();
         }
     }
+    
 
     public static class FuncExt
     {
