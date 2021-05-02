@@ -30,53 +30,12 @@ namespace FunConsole
         private static async Task Main(string[] args)
         {
             PartialApplicationAndCurrying.Run();
-
             MultiArgumentFunctions.Run();
-
             DataFunctionality.Run();
-            
             ValidationFun.Run();
-            
             Misc.Run();
- 
+            LazyComputation.Run();
             
-            
-            // Lazy Computation - OrElse
-            var volvoFactory = new CarFactory("Volvo");
-            var toyotaFactory = new CarFactory("Toyota");
-            volvoFactory.ProduceCars(2, "red");
-            toyotaFactory.ProduceCars(2, "blue");
-
-            volvoFactory.BuyCar("red")
-                .OrElse(toyotaFactory.BuyCar("blue")) // Not lazy - both will be called - two cars bought
-                .Match(
-                    newCar => WriteLine($"Bought {newCar.Brand} with color {newCar.Color}"),
-                    () => WriteLine("No matching car"));
-
-            WriteLine($"Volvo factory have {volvoFactory.Cars.Count} red cars for sale");
-            WriteLine($"Toyota factory have {volvoFactory.Cars.Count} blue cars for sale");
-
-            // Lazy Computation - GetOrElse
-            volvoFactory.BuyCar("red")
-                .OrElse(() => toyotaFactory.BuyCar("blue")) // () => Lazy, the second will not be evaluated - only one car bought
-                .Match(
-                    newCar => WriteLine($"Bought {newCar.Brand} with color {newCar.Color}"),
-                    () => WriteLine("No matching car"));
-            
-            WriteLine($"Volvo factory have {volvoFactory.Cars.Count} red cars for sale");
-            WriteLine($"Toyota factory have {toyotaFactory.Cars.Count} blue cars for sale");
-
-            WriteLine("GetOrElse(defaultValue): Try to buy new blue car or else I will paint my old car blue");
-            var oldCar = new Car("Volvo", "red", "old red car");
-            var car = volvoFactory.BuyCar("blue")
-                .GetOrElse(() => oldCar with {Color = "blue", Description = "old car painted blue"});
-            WriteLine("Result: " + car.Description);
-
-            // Lazy Computation - Map
-            Func<Car> lazyRedCar = () => new Car("Volvo", "Red");
-            Func<Car, Car> turnBlue = c => c with {Color = "Blue"};
-            Func<Car> lazyBlueCar = lazyRedCar.Map(turnBlue);
-            Out.WriteLine(lazyBlueCar());
 
             // Exception handling
             // The Try monad captures exceptions and uses them to cancel the computation.
