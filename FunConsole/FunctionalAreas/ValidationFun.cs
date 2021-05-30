@@ -1,13 +1,12 @@
 using System;
 using System.Linq;
 using LanguageExt;
-using LanguageExt.Common;
 using static System.Linq.Enumerable;
 using static LanguageExt.Prelude;
 using static System.Console;
 using Error = LanguageExt.Common.Error;
 
-namespace FunConsole
+namespace FunConsole.FunctionalAreas
 {
     public static class ValidationFun
     {

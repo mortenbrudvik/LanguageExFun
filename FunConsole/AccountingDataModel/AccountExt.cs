@@ -1,4 +1,4 @@
-﻿namespace FunConsole.DataFunctionalityDataModel
+﻿namespace FunConsole.AccountingDataModel
 {
     internal static class AccountExt
     {

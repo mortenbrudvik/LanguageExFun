@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using static System.Console;
 using static LanguageExt.Prelude;
 
-namespace FunConsole
+namespace FunConsole.FunctionalAreas
 {
     /* Partial Application
      *  Give a function fewer arguments than the function expects, obtaining a function that’s particularized with the values of the arguments given so far.

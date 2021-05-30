@@ -1,14 +1,14 @@
 ﻿using System;
 using DomainModel;
-using FunConsole.DataFunctionalityDataModel;
+using FunConsole.AccountingDataModel;
 using static System.Console;
 using static System.Decimal;
 using static LanguageExt.Prelude;
 using static Microsoft.FSharp.Collections.ListModule;
-using AccountStatus = FunConsole.DataFunctionalityDataModel.AccountStatus;
-using Transaction = FunConsole.DataFunctionalityDataModel.Transaction;
+using AccountStatus = FunConsole.AccountingDataModel.AccountStatus;
+using Transaction = FunConsole.AccountingDataModel.Transaction;
 
-namespace FunConsole
+namespace FunConsole.FunctionalAreas
 {
     public static class DataFunctionality
     {

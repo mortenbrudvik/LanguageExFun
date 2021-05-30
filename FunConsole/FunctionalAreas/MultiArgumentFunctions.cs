@@ -1,11 +1,11 @@
 using System;
-using LanguageExt;
 using System.Linq;
+using LanguageExt;
 using static System.Console;
 
 using static LanguageExt.Prelude;
 
-namespace FunConsole
+namespace FunConsole.FunctionalAreas
 {
     public static class MultiArgumentFunctions
     {

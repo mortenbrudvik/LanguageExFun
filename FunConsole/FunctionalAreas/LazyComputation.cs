@@ -1,7 +1,12 @@
 using System;
+using FunConsole.CarDataModel;
+using FunConsole.Extensions;
+using LanguageExt;
 using static System.Console;
 
-namespace FunConsole
+using static LanguageExt.Prelude;
+
+namespace FunConsole.FunctionalAreas
 {
     public static class LazyComputation
     {
@@ -37,6 +42,8 @@ namespace FunConsole
             var car = volvoFactory.BuyCar("blue")
                 .GetOrElse(() => oldCar with {Color = "blue", Description = "old car painted blue"});
             WriteLine("Result: " + car.Description);
+
+            Option<Car> optCar = None;
 
             // Lazy Computation - Map
             Func<Car> lazyRedCar = () => new Car("Volvo", "Red");

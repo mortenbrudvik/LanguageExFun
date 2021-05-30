@@ -2,7 +2,7 @@
 using System.Collections.Immutable;
 using System.Linq;
 
-namespace FunConsole.DataFunctionalityDataModel
+namespace FunConsole.AccountingDataModel
 {
     internal sealed class Account
     {
