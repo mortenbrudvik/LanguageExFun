@@ -1,20 +1,14 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using DomainModel;
-using Flurl.Http;
 using FunConsole.FunctionalAreas;
-using LanguageExt;
-using LanguageExt.ClassInstances;
-using LanguageExt.Common;
-using Microsoft.FSharp.Collections;
 using static System.Console;
-using static System.Decimal;
+using FunConsole.Utils;
+using String = FunConsole.Utils.String;
+using LanguageExt;
 using static LanguageExt.Prelude;
-using Error = LanguageExt.Common.Error;
-using Newtonsoft.Json.Linq;
+using Double = FunConsole.Utils.Double;
 
 namespace FunConsole
 {
@@ -34,10 +28,27 @@ namespace FunConsole
             Misc.Run();
             LazyComputation.Run();
             await ExceptionHandling.Run();
-            
 
+            await Out.WriteLineAsync("Traverse - Flipping it inside out");
+            var result = "1.1,2.3,1.6"
+                .Split(',')
+                .Map(String.Trim)
+                .Map(Double.Parse)
+                .Traverse(x => x)
+                .Map(Enumerable.Sum)
+                .Match(
+                    sum => Out.WriteLine("Sum: " + sum),
+                    () => Out.WriteLine("Some inputs could not be parsed"));
             
             ReadLine();
+        }
+    }
+    
+    static class CurrencyLayer
+    {
+        public static async Task<double> GetRate(string ccyPair)
+        {
+            return await Task.FromResult(0.82);
         }
     }
 }
