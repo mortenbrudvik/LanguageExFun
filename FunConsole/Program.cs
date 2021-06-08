@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using FunConsole.FunctionalAreas;
@@ -14,6 +15,8 @@ namespace FunConsole
 {
     /// <summary>
     /// https://github.com/louthy/language-ext
+    ///
+    /// Pending: Seq and Map
     /// </summary>
     internal  static class Program
     {
@@ -29,8 +32,14 @@ namespace FunConsole
             LazyComputation.Run();
             await ExceptionHandling.Run();
 
+            var names = await Task.Run(Process.GetProcesses)
+                .Map(processes =>
+                    Task.Run(() =>
+                        processes.ToSeq()
+                            .Map(process => process.ProcessName))).Unwrap();
+
             await Out.WriteLineAsync("Traverse - Flipping it inside out");
-            var result = "1.1,2.3,1.6"
+            "1.1,2.3,1.6"
                 .Split(',')
                 .Map(String.Trim)
                 .Map(Double.Parse)
@@ -43,12 +52,6 @@ namespace FunConsole
             ReadLine();
         }
     }
-    
-    static class CurrencyLayer
-    {
-        public static async Task<double> GetRate(string ccyPair)
-        {
-            return await Task.FromResult(0.82);
-        }
-    }
+
+    public record ProcessItem(string Name);
 }
