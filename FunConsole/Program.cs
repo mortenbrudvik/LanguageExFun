@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using FunConsole.Extensions;
 using FunConsole.FunctionalAreas;
 using static System.Console;
 using FunConsole.Utils;
@@ -10,6 +11,7 @@ using String = FunConsole.Utils.String;
 using LanguageExt;
 using static LanguageExt.Prelude;
 using Double = FunConsole.Utils.Double;
+using static FunConsole.Fun.TaskUtils;
 
 namespace FunConsole
 {
@@ -32,12 +34,12 @@ namespace FunConsole
             LazyComputation.Run();
             await ExceptionHandling.Run();
 
-            var names = await Task.Run(Process.GetProcesses)
+            var processItems = await Task.Run(() => Process.GetProcesses().ToSeq())
                 .Map(processes =>
-                    Task.Run(() =>
-                        processes.ToSeq()
-                            .Map(process => process.ProcessName))).Unwrap();
-
+                    processes.Map(process => process.ProcessName)
+                        .Map(name => new ProcessItem(name)));
+                
+            
             await Out.WriteLineAsync("Traverse - Flipping it inside out");
             "1.1,2.3,1.6"
                 .Split(',')
