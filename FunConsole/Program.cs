@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using FunConsole.CarDataModel;
 using FunConsole.Extensions;
 using FunConsole.FunctionalAreas;
 using static System.Console;
@@ -38,6 +39,12 @@ namespace FunConsole
                 .Map(processes =>
                     processes.Map(process => process.ProcessName)
                         .Map(name => new ProcessItem(name)));
+
+            var mobileCarDealer = new MobileCarDealer();
+
+            await Out.WriteLineAsync("Cheapest car: " + await mobileCarDealer.Cheapest(2021));
+            
+            
                 
             
             await Out.WriteLineAsync("Traverse - Flipping it inside out");

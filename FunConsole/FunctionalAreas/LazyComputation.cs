@@ -13,13 +13,13 @@ namespace FunConsole.FunctionalAreas
         public static void Run()
         {
             // Lazy Computation - OrElse
-            var volvoFactory = new CarFactory("Volvo");
-            var toyotaFactory = new CarFactory("Toyota");
-            volvoFactory.ProduceCars(2, "red");
-            toyotaFactory.ProduceCars(2, "blue");
+            var volvoFactory = new CarFactory(Brand.Volvo);
+            var toyotaFactory = new CarFactory(Brand.Volvo);
+            volvoFactory.ProduceCars(2, Color.Red);
+            toyotaFactory.ProduceCars(2, Color.Red);
 
-            volvoFactory.BuyCar("red")
-                .OrElse(toyotaFactory.BuyCar("blue")) // Not lazy - both will be called - two cars bought
+            volvoFactory.BuyCar(Color.Red)
+                .OrElse(toyotaFactory.BuyCar(Color.Blue)) // Not lazy - both will be called - two cars bought
                 .Match(
                     newCar => WriteLine($"Bought {newCar.Brand} with color {newCar.Color}"),
                     () => WriteLine("No matching car"));
@@ -28,8 +28,8 @@ namespace FunConsole.FunctionalAreas
             WriteLine($"Toyota factory have {volvoFactory.Cars.Count} blue cars for sale");
 
             // Lazy Computation - GetOrElse
-            volvoFactory.BuyCar("red")
-                .OrElse(() => toyotaFactory.BuyCar("blue")) // () => Lazy, the second will not be evaluated - only one car bought
+            volvoFactory.BuyCar(Color.Red)
+                .OrElse(() => toyotaFactory.BuyCar(Color.Blue)) // () => Lazy, the second will not be evaluated - only one car bought
                 .Match(
                     newCar => WriteLine($"Bought {newCar.Brand} with color {newCar.Color}"),
                     () => WriteLine("No matching car"));
@@ -38,16 +38,16 @@ namespace FunConsole.FunctionalAreas
             WriteLine($"Toyota factory have {toyotaFactory.Cars.Count} blue cars for sale");
 
             WriteLine("GetOrElse(defaultValue): Try to buy new blue car or else I will paint my old car blue");
-            var oldCar = new Car("Volvo", "red", "old red car");
-            var car = volvoFactory.BuyCar("blue")
-                .GetOrElse(() => oldCar with {Color = "blue", Description = "old car painted blue"});
+            var oldCar = new Car(Brand.Volvo, Color.Red, 2021, 4000, "old car");
+            var car = volvoFactory.BuyCar(Color.Blue)
+                .GetOrElse(() => oldCar with {Color = Color.Blue, Description = "old car painted blue"});
             WriteLine("Result: " + car.Description);
 
             Option<Car> optCar = None;
 
             // Lazy Computation - Map
-            Func<Car> lazyRedCar = () => new Car("Volvo", "Red");
-            Func<Car, Car> turnBlue = c => c with {Color = "Blue"};
+            Func<Car> lazyRedCar = () => new Car(Brand.Volvo, Color.Red, 2021, 4000);
+            Func<Car, Car> turnBlue = c => c with {Color = Color.Blue};
             Func<Car> lazyBlueCar = lazyRedCar.Map(turnBlue);
             Out.WriteLine(lazyBlueCar());
         }
