@@ -1,7 +1,10 @@
 using System;
+using System.Linq;
 using LanguageExt;
 using static System.Console;
 using static LanguageExt.Prelude;
+using Double = FunConsole.Utils.Double;
+using String = FunConsole.Utils.String;
 
 namespace FunConsole.FunctionalAreas
 {
@@ -24,8 +27,8 @@ namespace FunConsole.FunctionalAreas
             WriteLine("Functional composition");
             Func<int, int> add2 = x => x + 2;
             Func<int, int> add3 = x => x + 3;
-            Func<int, int> add5 = x => add2.Compose(add3)(x);
-            WriteLine("add2.Compose(add3)(5) = " + add5(2));
+            Func<int, int> add5 = x => add2.Compose(add3)(x); // ((x+2)+3) 
+            WriteLine("add2.Compose(add3)(5) = " + add5(2)); // ((2+2)+3) = 7
             
             // Memoization
             WriteLine("Memoization");
@@ -47,9 +50,22 @@ namespace FunConsole.FunctionalAreas
                 .Map(x => x * 10)
                 .Reduce((x, s) => s + x); // 150
             WriteLine("Reduced sum: " + reducedSum);
-
                 
-            
+            // Using traverse
+            Out.WriteLine("Traverse - Flipping it inside out");
+            "1.1,2.3,1.6"
+                .Split(',')
+                .Map(String.Trim)
+                .Map(Double.Parse)
+                .Traverse(x => x)
+                .Map(Enumerable.Sum)
+                .Match(
+                    sum => Out.WriteLine("Sum: " + sum),
+                    () => Out.WriteLine("Some inputs could not be parsed"));
+
+            // Flatten == Bind(x=>x)
+            var isSame = Some(Some(1)).Flatten() == Some(Some(1)).Bind(x => x);
+            Out.WriteLine("Flatten == Bind(x=>x) is " + isSame);      
         }
     }
 }

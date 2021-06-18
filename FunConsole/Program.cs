@@ -34,29 +34,8 @@ namespace FunConsole
             Misc.Run();
             LazyComputation.Run();
             await ExceptionHandling.Run();
-
-            var processItems = await Task.Run(() => Process.GetProcesses().ToSeq())
-                .Map(processes =>
-                    processes.Map(process => process.ProcessName)
-                        .Map(name => new ProcessItem(name)));
-
-            var mobileCarDealer = new MobileCarDealer();
-
-            await Out.WriteLineAsync("Cheapest car: " + await mobileCarDealer.Cheapest(2021));
+            await ThePromiseOfAFuture.Run();
             
-            
-                
-            
-            await Out.WriteLineAsync("Traverse - Flipping it inside out");
-            "1.1,2.3,1.6"
-                .Split(',')
-                .Map(String.Trim)
-                .Map(Double.Parse)
-                .Traverse(x => x)
-                .Map(Enumerable.Sum)
-                .Match(
-                    sum => Out.WriteLine("Sum: " + sum),
-                    () => Out.WriteLine("Some inputs could not be parsed"));
             
             ReadLine();
         }

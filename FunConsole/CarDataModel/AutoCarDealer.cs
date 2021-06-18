@@ -1,28 +1,27 @@
 using System.Linq;
 using System.Threading.Tasks;
+using FunConsole.Fun;
 using LanguageExt;
-
-using static FunConsole.Fun.TaskUtils;
 
 namespace FunConsole.CarDataModel
 {
-    public class MobileCarDealer : ICarDealer
+    public class AutoCarDealer : ICarDealer
     {
         private Seq<Car> _cars = new Seq<Car>(new[]
         {
-            new Car(Brand.Fiat, Color.Blue, 2021, 5000),
-            new Car(Brand.Volvo, Color.Blue, 2021, 4000),
-            new Car(Brand.Toyota, Color.Red, 2021, 7000)
+            new Car(Brand.Fiat, Color.Red, 2021, 2000),
+            new Car(Brand.Ford, Color.Yellow, 2021, 9000),
+            new Car(Brand.Toyota, Color.Blue, 2021, 6000)
         }); 
         
         public Task<Seq<Car>> Brands(int year)
         {
-            return Async(_cars.Where(car => car.Year == 2021));
+            return TaskUtils.Async(_cars.Where(car => car.Year == 2021));
         }
 
         public Task<Car> GetCheapest(int year)
         {
-            return Async(_cars.Where(car => car.Year == 2021)
+            return TaskUtils.Async(_cars.Where(car => car.Year == 2021)
                 .OrderBy(car=>car.Price).First());
         }
     }

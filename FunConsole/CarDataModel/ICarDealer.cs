@@ -6,6 +6,6 @@ namespace FunConsole.CarDataModel
     interface ICarDealer
     {
         Task<Seq<Car>> Brands(int year);
-        Task<Car> Cheapest(int year);
+        Task<Car> GetCheapest(int year);
     }
 }
