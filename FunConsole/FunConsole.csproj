@@ -10,6 +10,7 @@
     <PackageReference Include="Flurl.Http" Version="3.0.1" />
     <PackageReference Include="LanguageExt.Core" Version="3.4.15" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Reactive.Linq" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>

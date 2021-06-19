@@ -1,5 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
+using FunConsole.Extensions;
 using LanguageExt;
 using static System.Console;
 using static LanguageExt.Prelude;
@@ -66,6 +70,24 @@ namespace FunConsole.FunctionalAreas
             // Flatten == Bind(x=>x)
             var isSame = Some(Some(1)).Flatten() == Some(Some(1)).Bind(x => x);
             Out.WriteLine("Flatten == Bind(x=>x) is " + isSame);      
+            
+            // Reactive 
+            IEnumerable<char> e = new[] { 'a', 'b', 'c', 'd' };
+            IObservable<char> chars = e.ToObservable();
+            chars.Trace("chars");
+
+            var charInput = new Subject<char>();
+
+            Func<IObservable<char>, IObservable<(char,char)>> PairWithPrevious = source =>
+                from first in source
+                from second in source.Take(1)
+                select (Previous: first, Current: second); // ex: ('a', 'b'), ('b', 'c') etc.
+            
+            PairWithPrevious(charInput).Trace("Pair");
+            
+            charInput.OnNext('a');
+            charInput.OnNext('b');
+            charInput.OnNext('c');
         }
     }
 }
